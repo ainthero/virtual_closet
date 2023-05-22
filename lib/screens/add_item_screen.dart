@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wardrobe/globals.dart';
 import '../models/clothing_item.dart';
 
 class AddItemScreen extends StatefulWidget {
@@ -76,6 +77,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   size: sizeController.text,
                   label: labelController.text,
                 );
+                Global.clothes.add(newItem);
                 Navigator.of(context).pop(newItem);
               },
               child: Text('Add'),

@@ -1,92 +1,145 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:wardrobe/models/accessory.dart';
+import 'package:wardrobe/globals.dart';
 import '../models/clothing_item.dart';
 import '../models/outfit.dart';
-import '../widgets/outfit_accessory_widget.dart';
 
-class AddOutfitScreen extends StatefulWidget {
+class CreateOutfitScreen extends StatefulWidget {
   @override
-  _AddOutfitScreenState createState() => _AddOutfitScreenState();
+  _CreateOutfitScreenState createState() => _CreateOutfitScreenState();
 }
 
-class _AddOutfitScreenState extends State<AddOutfitScreen> {
-  final TextEditingController shoesController = TextEditingController();
-  final TextEditingController topController = TextEditingController();
-  final TextEditingController bottomController = TextEditingController();
-  final TextEditingController accessoryController = TextEditingController();
-  List<Accessory> accessories = [];
+class _CreateOutfitScreenState extends State<CreateOutfitScreen> {
+  String outfitLabel = '';
+  List<ClothingItem> selectedClothes = [];
+
+  void _addClothingItem(ClothingItem clothingItem) {
+    setState(() {
+      selectedClothes.add(clothingItem);
+    });
+  }
+
+  void _createOutfit() {
+    // Create an instance of the Outfit class with the entered label and selected clothes
+    Outfit newOutfit = Outfit(label: outfitLabel, items: selectedClothes);
+
+    // Do something with the new outfit, such as saving it to a database or displaying it on another screen
+
+    // Reset the screen
+    setState(() {
+      outfitLabel = '';
+      selectedClothes.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Outfit'),
+        title: Text('Create Outfit'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              controller: shoesController,
-              decoration: InputDecoration(labelText: 'Shoes'),
-            ),
-            TextField(
-              controller: topController,
-              decoration: InputDecoration(labelText: 'Top'),
-            ),
-            TextField(
-              controller: bottomController,
-              decoration: InputDecoration(labelText: 'Bottom'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final newOutfit = Outfit(
-                  shoes: ClothingItem(
-                    image: 'path_to_image', // Replace with actual path to image
-                    size: shoesController.text,
-                    label: 'Shoes',
-                  ),
-                  top: ClothingItem(
-                    image: 'path_to_image', // Replace with actual path to image
-                    size: topController.text,
-                    label: 'Top',
-                  ),
-                  bottom: ClothingItem(
-                    image: 'path_to_image', // Replace with actual path to image
-                    size: bottomController.text,
-                    label: 'Bottom',
-                  ),
-                  accessories: accessories,
-                );
-                Navigator.of(context).pop(newOutfit);
-              },
-              child: Text('Add'),
-            ),
-            SizedBox(height: 16.0),
-            Text('Accessories'),
-            TextField(
-              controller: accessoryController,
-              decoration: InputDecoration(labelText: 'Accessory'),
-            ),
-            ElevatedButton(
-              onPressed: () {
+              onChanged: (value) {
                 setState(() {
-                  accessories.add(
-                    Accessory(
-                      image: 'path_to_image', // Replace with actual path to image
-                      label: 'Accessory',
-                    ),
-                  );
-                  accessoryController.clear();
+                  outfitLabel = value;
                 });
               },
-              child: Text('Add Accessory'),
+              decoration: InputDecoration(
+                labelText: 'Outfit Label',
+              ),
             ),
-            Column(
-              children: accessories.map((accessory) => OutfitAccessoryWidget(accessory: accessory)).toList(),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClothesListScreen(
+                      onClothingItemAdded: _addClothingItem,
+                    ),
+                  ),
+                );
+              },
+              child: Text('Add Clothing Item'),
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Selected Clothes:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: selectedClothes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: SizedBox(
+                      width: 80.0,
+                      height: 80.0,
+                      child: Image.file(
+                        File(selectedClothes[index].image!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(selectedClothes[index].label),
+                  );
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _createOutfit();
+              },
+              child: Text('Create Outfit'),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ClothesListScreen extends StatelessWidget {
+  final Function(ClothingItem) onClothingItemAdded;
+
+  ClothesListScreen({required this.onClothingItemAdded});
+
+  // Replace with your actual list of clothing items
+  final List<ClothingItem> clothesList = Global.clothes;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Clothes List'),
+      ),
+      body: ListView.builder(
+        itemCount: clothesList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: SizedBox(
+              width: 80.0,
+              height: 80.0,
+              child: Image.file(
+                File(clothesList[index].image!),
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(clothesList[index].label),
+            onTap: () {
+              onClothingItemAdded(clothesList[index]);
+              Navigator.pop(context);
+            },
+          );
+        },
       ),
     );
   }

@@ -2,16 +2,12 @@ import 'accessory.dart';
 import 'clothing_item.dart';
 
 class Outfit {
-  final ClothingItem shoes;
-  final ClothingItem top;
-  final ClothingItem bottom;
-  final List<Accessory> accessories;
+  final String label;
+  final List<ClothingItem> items;
 
 
   Outfit({
-    required this.shoes,
-    required this.top,
-    required this.bottom,
-    required this.accessories,
+    required this.label,
+    required this.items
   });
 }

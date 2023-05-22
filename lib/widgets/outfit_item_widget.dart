@@ -9,7 +9,76 @@ class OutfitItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.94,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+        color: Colors.white70,
+        elevation: 10,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.2,
+                  maxHeight: MediaQuery.of(context).size.width * 0.2,
+                ),
+                child: Image.file(
+                    File(outfit.items[0].image!)
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.2,
+                  maxHeight: MediaQuery.of(context).size.width * 0.2,
+                ),
+                child: Image.file(
+                    File(outfit.items[1].image!)
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.2,
+                  maxHeight: MediaQuery.of(context).size.width * 0.2,
+                ),
+                child: Image.file(
+                    File(outfit.items[2].image!)
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                    child: Text(
+                      outfit.label,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+    /*return ListTile(
       leading: outfit.shoes.image != null
           ? Image.file(
         File(outfit.shoes.image!),
@@ -23,7 +92,6 @@ class OutfitItemWidget extends StatelessWidget {
       ),
       title: Text(outfit.top.label ?? ''),
       subtitle: Text(outfit.bottom.label ?? ''),
-      trailing: Text('${outfit.accessories.length} Accessories'),
-    );
+      trailing: Text('${outfit.accessories.length} Accessories'),*/
   }
 }
