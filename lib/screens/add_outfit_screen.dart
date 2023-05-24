@@ -20,17 +20,12 @@ class _CreateOutfitScreenState extends State<CreateOutfitScreen> {
     });
   }
 
-  void _createOutfit() {
+  Outfit _createOutfit() {
     // Create an instance of the Outfit class with the entered label and selected clothes
     Outfit newOutfit = Outfit(label: outfitLabel, items: selectedClothes);
-
+    Global.outfits.add(newOutfit);
     // Do something with the new outfit, such as saving it to a database or displaying it on another screen
-
-    // Reset the screen
-    setState(() {
-      outfitLabel = '';
-      selectedClothes.clear();
-    });
+    return newOutfit;
   }
 
   @override
@@ -96,7 +91,8 @@ class _CreateOutfitScreenState extends State<CreateOutfitScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                _createOutfit();
+                var newOutfit = _createOutfit();
+                Navigator.of(context).pop(newOutfit);
               },
               child: Text('Create Outfit'),
             ),

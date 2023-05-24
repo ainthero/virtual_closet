@@ -1,4 +1,3 @@
-import 'accessory.dart';
 import 'clothing_item.dart';
 
 class Outfit {

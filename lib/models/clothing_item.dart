@@ -1,7 +1,8 @@
 class ClothingItem {
   final String? image;
-  final String size;
-  final String label;
+  String size = "";
+  String label = "";
+  String type = "";
 
   ClothingItem({required this.image, required this.size, required this.label});
 }

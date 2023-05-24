@@ -60,6 +60,18 @@ class ClothingItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
+                    child: Text(
+                      clothingItem.type,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             )
           ],

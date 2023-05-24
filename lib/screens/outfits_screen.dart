@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wardrobe/globals.dart';
 import '../models/outfit.dart';
 import '../widgets/outfit_item_widget.dart';
 import 'add_outfit_screen.dart';
